@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:example/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:tbib_splash_screen/splash_screen_view.dart';
@@ -52,19 +54,28 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 5)).then((value) => setState(() {
-          isLoaded = true;
-        }));
+    Future.delayed(const Duration(seconds: 5)).then((value) => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
+    log("build page");
     return Scaffold(
       body: SplashScreenView(
         navigateWhere: isLoaded,
         navigateRoute: const HomeScreen(),
-        textType: TextType.TyperAnimatedText,
-        text: "Logo Screen",
+        text: WavyAnimatedText(
+          "Splash Screen",
+          speed: Duration(milliseconds: 500),
+          textStyle: const TextStyle(
+            color: Colors.red,
+            fontSize: 32.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        // textType: TextType.TyperAnimatedText,
+        //   text: "Logo Screen",
         imageSrc: "assets/logo_light.png",
       ),
     );
