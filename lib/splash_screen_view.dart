@@ -15,14 +15,14 @@ class SplashScreenView extends StatefulWidget {
   final Duration duration;
   final TextStyle? textStyle;
   final double logoSize;
-  final Duration speed;
+  Duration speed;
   final PageRouteTransition? pageRouteTransition;
   final List<Color>? colors;
   final TextType? textType;
   final Color? backgroundColor;
   final String? text;
 
-  const SplashScreenView(
+  SplashScreenView(
       {Key? key,
       required this.navigateRoute,
       this.imageSrc,
@@ -52,7 +52,9 @@ class _SplashScreenViewState extends State<SplashScreenView>
   @override
   void initState() {
     super.initState();
-
+    if (widget.textType == TextType.TyperAnimatedText) {
+      widget.speed = Duration(milliseconds: widget.speed.inMilliseconds ~/ 10);
+    }
     if (widget.imageSrc != null && widget.imageSrc!.isNotEmpty) {
       if (widget.imageSrc!.startsWith("http://") ||
           widget.imageSrc!.startsWith("https://")) {

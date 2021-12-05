@@ -63,10 +63,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SplashScreenView(
         navigateWhere: isLoaded,
         navigateRoute: const HomeScreen(),
-        textType: TextType.ColorizeAnimationText,
+        textType: TextType.TyperAnimatedText,
         text: "Logo Screen",
-        imageSrc:
-            "http://192.168.1.4/tbib_store/wp-content/uploads/2021/12/vector-ga49c84933_1280.png",
+        imageSrc: "assets/logo_light.png",
       ),
     );
   }
