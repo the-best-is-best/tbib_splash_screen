@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import 'src/animated_splash_text.dart';
 
@@ -18,10 +19,11 @@ class SplashScreenView extends StatefulWidget {
   final AnimatedText? text;
   final Color backgroundColor;
   final EdgeInsets paddingLoading;
+  final bool displayLoading;
   SplashScreenView({
     Key? key,
     required this.navigateRoute,
-    required this.navigateWhere,
+    this.navigateWhere,
     required this.imageSrc,
     this.backgroundColor = Colors.white,
     this.duration = const Duration(milliseconds: 3000),
@@ -31,6 +33,7 @@ class SplashScreenView extends StatefulWidget {
     this.paddingText = const EdgeInsets.only(right: 10, left: 10, top: 20),
     this.text,
     this.paddingLoading = const EdgeInsets.only(bottom: 100),
+    this.displayLoading = true,
   }) : super(key: key);
 
   @override
@@ -39,10 +42,10 @@ class SplashScreenView extends StatefulWidget {
 
 class _SplashScreenViewState extends State<SplashScreenView>
     with SingleTickerProviderStateMixin {
-  //final double? _defaultTextFontSize = 20;
   late Animation<double> _animation;
   late AnimationController _animationController;
-  bool isNetworkImage = false;
+  bool _isNetworkImage = false;
+  bool _isLottie = false;
   @override
   void initState() {
     super.initState();
@@ -53,18 +56,30 @@ class _SplashScreenViewState extends State<SplashScreenView>
         parent: _animationController, curve: Curves.easeInCirc));
 
     _animationController.forward();
+
     if (widget.imageSrc != null && widget.imageSrc!.isNotEmpty) {
       if (widget.imageSrc!.startsWith("http://") ||
           widget.imageSrc!.startsWith("https://")) {
-        isNetworkImage = true;
+        _isNetworkImage = true;
       } else {
-        isNetworkImage = false;
+        _isNetworkImage = false;
       }
     } else {
-      isNetworkImage = false;
+      _isNetworkImage = false;
     }
 
-    log("widget.isNetworkImage $isNetworkImage");
+    //lottie
+    if (widget.imageSrc != null && widget.imageSrc!.isNotEmpty) {
+      if (widget.imageSrc!.endsWith(".json")) {
+        _isLottie = true;
+      } else {
+        _isLottie = false;
+      }
+    } else {
+      _isLottie = false;
+    }
+
+    log("widget._isNetworkImage $_isNetworkImage");
 
     if (widget.navigateWhere == null) {
       Future.delayed(
@@ -92,23 +107,24 @@ class _SplashScreenViewState extends State<SplashScreenView>
 
   bool awaitLoading = false;
   void waitUntilWhereEqualTrue() async {
-    while (widget.navigateWhere == false) {
+    if (widget.navigateWhere == false) {
       await Future.delayed(const Duration(seconds: 1));
-      if (!awaitLoading) {
-        setState(() {
-          awaitLoading = true;
-        });
-      }
       waitUntilWhereEqualTrue();
-    }
-    if (widget.pageRouteTransition == PageRouteTransition.CupertinoPageRoute) {
-      Navigator.of(context).pushReplacement(CupertinoPageRoute(
-          builder: (BuildContext context) => widget.navigateRoute));
-    } else if (widget.pageRouteTransition ==
-        PageRouteTransition.SlideTransition) {
-      Navigator.of(context).pushReplacement(_tweenAnimationPageRoute());
     } else {
-      Navigator.of(context).pushReplacement(_normalPageRoute());
+      setState(() {
+        awaitLoading = true;
+      });
+
+      if (widget.pageRouteTransition ==
+          PageRouteTransition.CupertinoPageRoute) {
+        Navigator.of(context).pushReplacement(CupertinoPageRoute(
+            builder: (BuildContext context) => widget.navigateRoute));
+      } else if (widget.pageRouteTransition ==
+          PageRouteTransition.SlideTransition) {
+        Navigator.of(context).pushReplacement(_tweenAnimationPageRoute());
+      } else {
+        Navigator.of(context).pushReplacement(_normalPageRoute());
+      }
     }
   }
 
@@ -129,8 +145,10 @@ class _SplashScreenViewState extends State<SplashScreenView>
           opacity: _animation,
           child: Stack(
             children: <Widget>[
-              (widget.imageSrc != null && widget.imageSrc!.isNotEmpty)
-                  ? (isNetworkImage)
+              (widget.imageSrc != null &&
+                      widget.imageSrc!.isNotEmpty &&
+                      !_isLottie)
+                  ? (_isNetworkImage)
                       ? Align(
                           alignment: Alignment.center,
                           child: Image.network(
@@ -141,6 +159,25 @@ class _SplashScreenViewState extends State<SplashScreenView>
                       : Align(
                           alignment: Alignment.center,
                           child: Image.asset(
+                            widget.imageSrc!,
+                            height: widget.logoSize,
+                          ),
+                        )
+                  : const SizedBox(),
+              (widget.imageSrc != null &&
+                      widget.imageSrc!.isNotEmpty &&
+                      _isLottie)
+                  ? (_isNetworkImage)
+                      ? Align(
+                          alignment: Alignment.center,
+                          child: Lottie.network(
+                            widget.imageSrc!,
+                            height: widget.logoSize,
+                          ),
+                        )
+                      : Align(
+                          alignment: Alignment.center,
+                          child: Lottie.asset(
                             widget.imageSrc!,
                             height: widget.logoSize,
                           ),
@@ -158,7 +195,7 @@ class _SplashScreenViewState extends State<SplashScreenView>
                       ),
                     )
                   : const SizedBox(),
-              awaitLoading == true
+              awaitLoading == true && widget.displayLoading == true
                   ? Align(
                       alignment: Alignment.bottomCenter,
                       child: Padding(

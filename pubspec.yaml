@@ -1,6 +1,6 @@
 name: tbib_splash_screen
 description: This flutter lib is used as Splash Screen of your app to display logo With Text Animated by Animated Text Kit.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/the-best-is-best/tbib_splash_screen
 
 environment:
@@ -18,6 +18,7 @@ dependencies:
   yaml: ^3.1.0
   universal_io: ^2.0.4
   animated_text_kit: ^4.2.1
+  lottie: ^1.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

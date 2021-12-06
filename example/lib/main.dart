@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:example/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:tbib_splash_screen/splash_screen_view.dart';
@@ -54,12 +52,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 5)).then((value) => setState(() {}));
+    Future.delayed(const Duration(seconds: 10)).then((value) => setState(() {
+          isLoaded = true;
+        }));
   }
 
   @override
   Widget build(BuildContext context) {
-    log("build page");
     return Scaffold(
       body: SplashScreenView(
         navigateWhere: isLoaded,
@@ -72,7 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        imageSrc: "assets/logo_light.png",
+        imageSrc: "assets/logo_light_lottie.json",
+        //  displayLoading: false,
       ),
     );
   }
