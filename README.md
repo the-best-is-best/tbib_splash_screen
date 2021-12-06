@@ -105,21 +105,22 @@ flutter pub run tbib_splash_screen:remove
  ```
 
 
-## you can use use  [lottie package](https://pub.dev/packages/animated_text_kit)
+## you can use use  [lottie package](https://pub.dev/packages/lottie)
 
 
 ```dart
-       SplashScreenView(
-               navigateWhere: isLoaded,
-               navigateRoute: const HomeScreen(),
-               text: WavyAnimatedText(
-                 "Splash Screen",
-                 textStyle: const TextStyle(
-                   color: Colors.red,
-                   fontSize: 32.0,
-                   fontWeight: FontWeight.bold,
-                 ),
-               ),
-               imageSrc: "assets/logo_light.png",
-             ),
+        SplashScreenView(
+            navigateWhere: isLoaded,
+            navigateRoute: const HomeScreen(),
+            text: WavyAnimatedText(
+                "Splash Screen",
+                textStyle: const TextStyle(
+                color: Colors.red,
+                fontSize: 32.0,
+                fontWeight: FontWeight.bold,
+                ),
+            ),
+            imageSrc: "assets/logo_light_lottie.json",
+            //  displayLoading: false,
+      );
  ```

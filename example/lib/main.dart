@@ -59,8 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SplashScreenView(
+    return SplashScreenView(
         navigateWhere: isLoaded,
         navigateRoute: const HomeScreen(),
         text: WavyAnimatedText(
@@ -73,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         imageSrc: "assets/logo_light_lottie.json",
         //  displayLoading: false,
-      ),
-    );
+      );
+
   }
 }
