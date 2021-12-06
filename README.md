@@ -8,7 +8,7 @@ see all animated text in Animated Text Kit
 
 ## but add new animations for fade anim , route and scale to disable fade out text 
 
-#FadeAnimatedSplashScreenText - RotateAnimatedSplashScreenText - ScaleAnimatedSplashScreenText
+# FadeAnimatedSplashScreenText - RotateAnimatedSplashScreenText - ScaleAnimatedSplashScreenText
 
 
 They say, first impression is the last! Yep, truly for any amazingly crafted application, it's easier to start impressing your audience with a good start - the splash screen!
