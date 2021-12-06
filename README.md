@@ -10,6 +10,9 @@ see all animated text in Animated Text Kit
 
 # FadeAnimatedSplashScreenText - RotateAnimatedSplashScreenText - ScaleAnimatedSplashScreenText
 
+# v 0.0.2
+
+ Support lottie file.
 
 They say, first impression is the last! Yep, truly for any amazingly crafted application, it's easier to start impressing your audience with a good start - the splash screen!
 

@@ -60,19 +60,18 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return SplashScreenView(
-        navigateWhere: isLoaded,
-        navigateRoute: const HomeScreen(),
-        text: WavyAnimatedText(
-          "Splash Screen",
-          textStyle: const TextStyle(
-            color: Colors.red,
-            fontSize: 32.0,
-            fontWeight: FontWeight.bold,
-          ),
+      navigateWhere: isLoaded,
+      navigateRoute: const HomeScreen(),
+      text: WavyAnimatedText(
+        "Splash Screen",
+        textStyle: const TextStyle(
+          color: Colors.red,
+          fontSize: 32.0,
+          fontWeight: FontWeight.bold,
         ),
-        imageSrc: "assets/logo_light_lottie.json",
-        //  displayLoading: false,
-      );
-
+      ),
+      imageSrc: "assets/logo_light_lottie.json",
+      //  displayLoading: false,
+    );
   }
 }
