@@ -66,16 +66,12 @@ class _MyHomePageState extends State<MyHomePage> {
         navigateRoute: const HomeScreen(),
         text: WavyAnimatedText(
           "Splash Screen",
-          speed: Duration(milliseconds: 500),
           textStyle: const TextStyle(
             color: Colors.red,
             fontSize: 32.0,
             fontWeight: FontWeight.bold,
           ),
         ),
-
-        // textType: TextType.TyperAnimatedText,
-        //   text: "Logo Screen",
         imageSrc: "assets/logo_light.png",
       ),
     );

@@ -81,6 +81,8 @@ flutter pub run tbib_splash_screen:remove
         ),
       ),
       imageSrc: "assets/logo_light.png",
+      // paddingText
+      // paddingLoading
     );
  ```
 

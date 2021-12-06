@@ -1,11 +1,6 @@
+export 'package:animated_text_kit/animated_text_kit.dart';
+
 export 'splash_screen.dart';
-export 'src/animated_text.dart';
-export 'src/colorize.dart';
-export 'src/fade.dart';
-export 'src/flicker.dart';
-export 'src/rotate.dart';
-export 'src/scale.dart';
-export 'src/text_liquid_fill.dart';
-export 'src/typer.dart';
-export 'src/typewriter.dart';
-export 'src/wavy.dart';
+export 'src/splash_text_anim/fade.dart';
+export 'src/splash_text_anim/route.dart';
+export 'src/splash_text_anim/scale.dart';

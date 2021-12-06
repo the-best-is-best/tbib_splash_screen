@@ -1,10 +1,10 @@
 import 'dart:developer';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'src/animated_splash_text.dart';
-import 'src/class/class_animated_text.dart';
 
 class SplashScreenView extends StatefulWidget {
   final Widget navigateRoute;
@@ -16,17 +16,21 @@ class SplashScreenView extends StatefulWidget {
   final PageRouteTransition? pageRouteTransition;
   final EdgeInsets paddingText;
   final AnimatedText? text;
+  final Color backgroundColor;
+  final EdgeInsets paddingLoading;
   SplashScreenView({
     Key? key,
     required this.navigateRoute,
     required this.navigateWhere,
     required this.imageSrc,
+    this.backgroundColor = Colors.white,
     this.duration = const Duration(milliseconds: 3000),
     this.logoSize = 150,
     this.speed = const Duration(milliseconds: 1000),
     this.pageRouteTransition,
     this.paddingText = const EdgeInsets.only(right: 10, left: 10, top: 20),
     this.text,
+    this.paddingLoading = const EdgeInsets.only(bottom: 100),
   }) : super(key: key);
 
   @override
@@ -116,39 +120,54 @@ class _SplashScreenViewState extends State<SplashScreenView>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: FadeTransition(
-        opacity: _animation,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            (widget.imageSrc != null && widget.imageSrc!.isNotEmpty)
-                ? (isNetworkImage)
-                    ? Image.network(
-                        widget.imageSrc!,
-                        height: widget.logoSize,
-                      )
-                    : Image.asset(
-                        widget.imageSrc!,
-                        height: widget.logoSize,
-                      )
-                : const SizedBox(),
-            widget.text != null
-                ? Padding(
-                    padding: widget.paddingText,
-                    child: SizedBox(height: 100, child: getTextWidget()),
-                  )
-                : const SizedBox(),
-            const SizedBox(
-              height: 50,
-            ),
-            awaitLoading == true
-                ? const Center(child: CircularProgressIndicator())
-                : const SizedBox()
-          ],
+    return Scaffold(
+      backgroundColor: widget.backgroundColor,
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: FadeTransition(
+          opacity: _animation,
+          child: Stack(
+            children: <Widget>[
+              (widget.imageSrc != null && widget.imageSrc!.isNotEmpty)
+                  ? (isNetworkImage)
+                      ? Align(
+                          alignment: Alignment.center,
+                          child: Image.network(
+                            widget.imageSrc!,
+                            height: widget.logoSize,
+                          ),
+                        )
+                      : Align(
+                          alignment: Alignment.center,
+                          child: Image.asset(
+                            widget.imageSrc!,
+                            height: widget.logoSize,
+                          ),
+                        )
+                  : const SizedBox(),
+              widget.text != null
+                  ? Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: widget.logoSize + 40),
+                        child: Padding(
+                          padding: widget.paddingText,
+                          child: SizedBox(height: 100, child: getTextWidget()),
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
+              awaitLoading == true
+                  ? Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: widget.paddingLoading,
+                        child: const CircularProgressIndicator(),
+                      ))
+                  : const SizedBox()
+            ],
+          ),
         ),
       ),
     );
