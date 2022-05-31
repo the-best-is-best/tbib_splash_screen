@@ -13,19 +13,21 @@ class SplashScreenView extends StatefulWidget {
   final String? imageSrc;
   final Duration duration;
   final double logoSize;
-  Duration speed;
+  final Duration speed;
   final PageRouteTransition? pageRouteTransition;
   final EdgeInsets paddingText;
   final AnimatedText? text;
   final Color backgroundColor;
+  final LinearGradient? linearGradient;
   final EdgeInsets paddingLoading;
   final bool displayLoading;
-  SplashScreenView({
+  const SplashScreenView({
     Key? key,
     required this.navigateRoute,
     this.navigateWhere,
     required this.imageSrc,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor = Colors.transparent,
+    this.linearGradient,
     this.duration = const Duration(milliseconds: 3000),
     this.logoSize = 150,
     this.speed = const Duration(milliseconds: 1000),
@@ -46,6 +48,7 @@ class _SplashScreenViewState extends State<SplashScreenView>
   late AnimationController _animationController;
   bool _isNetworkImage = false;
   bool _isLottie = false;
+
   @override
   void initState() {
     super.initState();
@@ -138,7 +141,10 @@ class _SplashScreenViewState extends State<SplashScreenView>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: widget.backgroundColor,
-      body: SizedBox(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: widget.linearGradient,
+        ),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: FadeTransition(
@@ -154,6 +160,7 @@ class _SplashScreenViewState extends State<SplashScreenView>
                           child: Image.network(
                             widget.imageSrc!,
                             height: widget.logoSize,
+                            fit: BoxFit.cover,
                           ),
                         )
                       : Align(
@@ -161,6 +168,7 @@ class _SplashScreenViewState extends State<SplashScreenView>
                           child: Image.asset(
                             widget.imageSrc!,
                             height: widget.logoSize,
+                            fit: BoxFit.cover,
                           ),
                         )
                   : const SizedBox(),
@@ -173,6 +181,7 @@ class _SplashScreenViewState extends State<SplashScreenView>
                           child: Lottie.network(
                             widget.imageSrc!,
                             height: widget.logoSize,
+                            fit: BoxFit.cover,
                           ),
                         )
                       : Align(
@@ -180,6 +189,7 @@ class _SplashScreenViewState extends State<SplashScreenView>
                           child: Lottie.asset(
                             widget.imageSrc!,
                             height: widget.logoSize,
+                            fit: BoxFit.cover,
                           ),
                         )
                   : const SizedBox(),

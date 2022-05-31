@@ -109,11 +109,11 @@ void _createAndroidSplash({
 
 /// Create splash screen as drawables for multiple screens (dpi)
 void _applyImageAndroid({required String imagePath, bool dark = false}) {
-  print('[Android] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
+  log('[Android] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
 
   final image = img.decodeImage(File(imagePath).readAsBytesSync());
   if (image == null) {
-    print('The file $imagePath could not be read.');
+    log('The file $imagePath could not be read.');
     exit(1);
   }
 
@@ -145,7 +145,7 @@ void _applyLaunchBackgroundXml(
     {required String launchBackgroundFilePath,
     required String gravity,
     required bool showImage}) {
-  print('[Android] Updating $launchBackgroundFilePath with splash image path');
+  log('[Android] Updating $launchBackgroundFilePath with splash image path');
   final launchBackgroundFile = File(launchBackgroundFilePath);
   var launchBackgroundDocument;
   launchBackgroundFile.createSync(recursive: true);
@@ -172,13 +172,13 @@ void _applyStylesXml(
   final stylesFile = File(file);
 
   if (!stylesFile.existsSync()) {
-    print('[Android] No styles.xml file found in your Android project');
-    print('[Android] Creating styles.xml file and adding it to your Android '
+    log('[Android] No styles.xml file found in your Android project');
+    log('[Android] Creating styles.xml file and adding it to your Android '
         'project');
     stylesFile.createSync(recursive: true);
     stylesFile.writeAsStringSync(template);
   }
-  print('[Android] Updating styles.xml with full screen mode setting');
+  log('[Android] Updating styles.xml with full screen mode setting');
   _updateStylesFile(fullScreen: fullScreen, stylesFile: stylesFile);
 }
 
@@ -188,7 +188,7 @@ void _updateStylesFile({required bool fullScreen, required File stylesFile}) {
   final resources = stylesDocument.getElement('resources');
   final styles = resources?.findElements('style');
   if (styles?.length == 1) {
-    print('[Android] Only 1 style in styles.xml. Flutter V2 embedding has 2 '
+    log('[Android] Only 1 style in styles.xml. Flutter V2 embedding has 2 '
         'styles by default.  Full screen mode not supported in Flutter V1 '
         'embedding.  Skipping update of styles.xml with fullscreen mode');
     return;
@@ -201,7 +201,7 @@ void _updateStylesFile({required bool fullScreen, required File stylesFile}) {
             attribute.name.toString() == 'name' &&
             attribute.value == 'LaunchTheme')));
   } on StateError {
-    print('LaunchTheme was not found in styles.xml. Skipping fullscreen'
+    log('LaunchTheme was not found in styles.xml. Skipping fullscreen'
         'mode');
     return;
   }

@@ -56,8 +56,6 @@ class _AnimatedTextKitState extends State<AnimatedSplashTextKit>
 
     _currentAnimatedText.initAnimation(_controller);
 
-    _controller
-      ..addStatusListener
-      ..forward();
+    _controller.forward();
   }
 }

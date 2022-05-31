@@ -86,11 +86,11 @@ void _createiOSSplash({
 
 /// Create splash screen images for original size, @2x and @3x
 void _applyImageiOS({required String imagePath, bool dark = false}) {
-  print('[iOS] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
+  log('[iOS] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
 
   final image = img.decodeImage(File(imagePath).readAsBytesSync());
   if (image == null) {
-    print(imagePath + ' could not be loaded.');
+    log(imagePath + ' could not be loaded.');
     exit(1);
   }
   for (var template in dark ? iOSSplashImagesDark : iOSSplashImages) {
@@ -119,12 +119,12 @@ void _applyLaunchScreenStoryboard(
   final file = File(_iOSLaunchScreenStoryboardFile);
 
   if (file.existsSync()) {
-    print('[iOS] Updating LaunchScreen.storyboard with width, and height');
+    log('[iOS] Updating LaunchScreen.storyboard with width, and height');
     return _updateLaunchScreenStoryboard(
         imagePath: imagePath, iosContentMode: iosContentMode);
   } else {
-    print('[iOS] No LaunchScreen.storyboard file found in your iOS project');
-    print('[iOS] Creating LaunchScreen.storyboard file and adding it '
+    log('[iOS] No LaunchScreen.storyboard file found in your iOS project');
+    log('[iOS] Creating LaunchScreen.storyboard file and adding it '
         'to your iOS project');
     return _createLaunchScreenStoryboard(
         imagePath: imagePath, iosContentMode: iosContentMode);
@@ -146,7 +146,7 @@ void _updateLaunchScreenStoryboard(
         element.getAttribute('id') == 'Ze5-6b-2t3');
   });
   if (view == null) {
-    print('Default Flutter view Ze5-6b-2t3 not found. '
+    log('Default Flutter view Ze5-6b-2t3 not found. '
         'Did you modify your default LaunchScreen.storyboard file?');
     exit(1);
   }
@@ -154,7 +154,7 @@ void _updateLaunchScreenStoryboard(
   // Find the splash imageView
   final subViews = view.getElement('subviews');
   if (subViews == null) {
-    print('Not able to find "subviews" in LaunchScreen.storyboard. Image for '
+    log('Not able to find "subviews" in LaunchScreen.storyboard. Image for '
         'splash screen not updated. Did you modify your default '
         'LaunchScreen.storyboard file?');
     exit(1);
@@ -162,7 +162,7 @@ void _updateLaunchScreenStoryboard(
   final imageView = subViews.children.whereType<XmlElement>().firstWhere(
       (element) => (element.name.qualified == 'imageView' &&
           element.getAttribute('image') == 'LaunchImage'), orElse: () {
-    print('Not able to find "LaunchImage" in LaunchScreen.storyboard. Image '
+    log('Not able to find "LaunchImage" in LaunchScreen.storyboard. Image '
         'for splash screen not updated. Did you modify your default '
         'LaunchScreen.storyboard file?');
     exit(1);
@@ -184,7 +184,7 @@ void _updateLaunchScreenStoryboard(
       .firstWhere(
           (element) => (element.name.qualified == 'image' &&
               element.getAttribute('name') == 'LaunchImage'), orElse: () {
-    print('Not able to find "LaunchImage" in LaunchScreen.storyboard. Image '
+    log('Not able to find "LaunchImage" in LaunchScreen.storyboard. Image '
         'for splash screen not updated. Did you modify your default '
         'LaunchScreen.storyboard file?');
     exit(1);
@@ -209,7 +209,7 @@ void _updateLaunchScreenStoryboard(
   if (imagePath.isNotEmpty) {
     final image = img.decodeImage(File(imagePath).readAsBytesSync());
     if (image == null) {
-      print(imagePath + ' could not be loaded.');
+      log(imagePath + ' could not be loaded.');
       exit(1);
     }
     launchImageResource?.setAttribute('width', image.width.toString());
@@ -286,13 +286,13 @@ void _applyInfoPList({List<String>? plistFiles, required bool fullscreen}) {
 
   plistFiles.forEach((plistFile) {
     if (!File(plistFile).existsSync()) {
-      print('File $plistFile not found.  If you renamed the file, make sure to'
+      log('File $plistFile not found.  If you renamed the file, make sure to'
           ' specify it in the info_plist_files section of your '
           'flutter_native_splash configuration.');
       exit(1);
     }
 
-    print('[iOS] Updating $plistFile for status bar hidden/visible');
+    log('[iOS] Updating $plistFile for status bar hidden/visible');
     _updateInfoPlistFile(plistFile: plistFile, fullscreen: fullscreen);
   });
 }

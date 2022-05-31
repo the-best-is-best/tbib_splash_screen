@@ -18,7 +18,7 @@ void _createWebSplash({
   required String darkBackgroundImage,
 }) {
   if (!File(_webIndex).existsSync()) {
-    print('[Web] ' + _webIndex + ' not found.  Skipping Web.');
+    log('[Web] ' + _webIndex + ' not found.  Skipping Web.');
     return;
   }
 
@@ -78,10 +78,10 @@ void createWebImages(
   } else {
     final image = img.decodeImage(File(imagePath).readAsBytesSync());
     if (image == null) {
-      print(imagePath + ' could not be read');
+      log(imagePath + ' could not be read');
       exit(1);
     }
-    print('[Web] Creating images');
+    log('[Web] Creating images');
     for (var template in webSplashImages) {
       _saveImageWeb(template: template, image: image);
     }
@@ -103,7 +103,7 @@ void _saveImageWeb(
 }
 
 void createSplashCss({required String color, required String darkColor}) {
-  print('[Web] Creating CSS');
+  log('[Web] Creating CSS');
   if (darkColor.isEmpty) darkColor = color;
   var cssContent = _webCss
       .replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#' + color)
@@ -114,7 +114,7 @@ void createSplashCss({required String color, required String darkColor}) {
 }
 
 void updateIndex({required String imageMode, required bool showImages}) {
-  print('[Web] Updating index.html');
+  log('[Web] Updating index.html');
   final webIndex = File(_webIndex);
   var lines = webIndex.readAsLinesSync();
 

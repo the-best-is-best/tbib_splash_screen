@@ -8,7 +8,11 @@ see all animated text in Animated Text Kit
 
 ## but add new animations for fade anim , route and scale to disable fade out text 
 
-# FadeAnimatedSplashScreenText - RotateAnimatedSplashScreenText - ScaleAnimatedSplashScreenText
+* FadeAnimatedSplashScreenText - RotateAnimatedSplashScreenText - ScaleAnimatedSplashScreenText
+
+## v 0.0.5
+  Support gradient color in backgrond if you want 
+  
 
 ## v 0.0.2
 

@@ -61,7 +61,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return SplashScreenView(
       navigateWhere: isLoaded,
-      navigateRoute: const HomeScreen(),
+      navigateRoute: const HomeScreen(), backgroundColor: Colors.white,
+      linearGradient: const LinearGradient(
+          colors: [
+            Color(0xFF3366FF),
+            Color(0xFF00CCFF),
+          ],
+          begin: FractionalOffset(0.0, 0.0),
+          end: FractionalOffset(1.0, 0.0),
+          stops: [0.0, 1.0],
+          tileMode: TileMode.clamp),
       text: WavyAnimatedText(
         "Splash Screen",
         textStyle: const TextStyle(

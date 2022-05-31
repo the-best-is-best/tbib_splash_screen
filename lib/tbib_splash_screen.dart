@@ -1,5 +1,7 @@
 library tbib_splash_screen;
 
+import 'dart:developer';
+
 import 'package:image/image.dart' as img;
 import 'package:meta/meta.dart';
 import 'package:universal_io/io.dart';
@@ -74,14 +76,14 @@ void createSplashByConfig(Map<String, dynamic> config) {
         imageMode: webImageMode);
   }
 
-  print('');
-  print('Native splash complete. 👍');
-  print('Now go finish building something awesome! 💪 You rock! 🤘🤩');
+  log('');
+  log('Native splash complete. 👍');
+  log('Now go finish building something awesome! 💪 You rock! 🤘🤩');
 }
 
 /// Remove any splash screen by setting the default white splash
 void removeSplash() {
-  print('Restoring Flutter\'s default white native splash screen...');
+  log('Restoring Flutter\'s default white native splash screen...');
   var config = getConfig();
 
   var removeConfig = <String, dynamic>{'color': '#ffffff'};
@@ -101,7 +103,7 @@ String checkImageExists(
     {required Map<String, dynamic> config, required String parameter}) {
   String image = config[parameter] ?? '';
   if (image.isNotEmpty && !File(image).existsSync()) {
-    print('The file "$image" set as the parameter "$parameter" was not found.');
+    log('The file "$image" set as the parameter "$parameter" was not found.');
     exit(1);
   }
   return image;
@@ -147,20 +149,20 @@ Map<String, dynamic> getConfig({String? configFile}) {
 
 void checkConfig(Map<String, dynamic> config) {
   if (config.containsKey('color') && config.containsKey('background_image')) {
-    print('Your `tbib_splash_screen` section cannot not contain both a '
+    log('Your `tbib_splash_screen` section cannot not contain both a '
         '`color` and `background_image`.');
     exit(1);
   }
 
   if (!config.containsKey('color') && !config.containsKey('background_image')) {
-    print('Your `tbib_splash_screen` section does not contain a `color` or '
+    log('Your `tbib_splash_screen` section does not contain a `color` or '
         '`background_image`.');
     exit(1);
   }
 
   if (config.containsKey('color_dark') &&
       config.containsKey('background_image_dark')) {
-    print('Your `tbib_splash_screen` section cannot not contain both a '
+    log('Your `tbib_splash_screen` section cannot not contain both a '
         '`color_dark` and `background_image_dark`.');
     exit(1);
   }
@@ -168,7 +170,7 @@ void checkConfig(Map<String, dynamic> config) {
   if (config.containsKey('image_dark') &&
       !config.containsKey('color_dark') &&
       !config.containsKey('background_image_dark')) {
-    print('Your `tbib_splash_screen` section contains `image_dark` but '
+    log('Your `tbib_splash_screen` section contains `image_dark` but '
         'does not contain a `color_dark` or a `background_image_dark`.');
     exit(1);
   }
