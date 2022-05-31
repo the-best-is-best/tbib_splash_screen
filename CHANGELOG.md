@@ -1,3 +1,6 @@
+## 0.0.6
+
+* Please use flutter_native_splash to create Native.
 ## 0.0.5
 
 * Upgrade Library.

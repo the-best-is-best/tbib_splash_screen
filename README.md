@@ -12,7 +12,7 @@ see all animated text in Animated Text Kit
 
 ## v 0.0.5
   Support gradient color in backgrond if you want 
-  
+
 
 ## v 0.0.2
 
@@ -35,38 +35,6 @@ This package also contains a collection of Splash Screen example for your applic
 <tr><td><img src="https://raw.githubusercontent.com/the-best-is-best/tbib_splash_screen/master/src/Before_Splash.gif" height = "400px"></td><td><img src="https://raw.githubusercontent.com/the-best-is-best/tbib_splash_screen/master/src/After_Splash.gif" align = "right" height = "400px"></td></tr>
 </table>
 
-# Setting the native splash screen
-```yaml
-tbib_splash_screen:
-  # Use color to set the background of your splash screen to a solid color.
-  # Use background_image to set the background of your splash screen to a png image.
-  # This is useful for gradients. The image will be stretch to the  size of the app.
-  # Only one parameter can be used, color and background_image cannot both be set.
-
-  color: "#ffffff"
-  #background_image: "assets/splashscreen_image.png"
-
-  # Optional parameters are listed below.
-  #image: assets/splashscreen_image.png
-
-  #color_dark: "#042a49"
-  #background_image_dark: "assets/dark-background.png"
-  #image_dark: assets/splash-invert.png
-
-  #android: false
-  #ios: false
-  #web: false
-
-  #android_gravity: center
-  #ios_content_mode: center
-  #web_image_mode: center
-
-  #fullscreen: true
-
-  #info_plist_files:
-  #  - 'ios/Runner/Info-Debug.plist'
-  #  - 'ios/Runner/Info-Release.plist'
-```
 
 # but to create native splash screen 
 
