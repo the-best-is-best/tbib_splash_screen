@@ -1,32 +1,31 @@
 part of tbib_splash_screen;
 
 /// Image template
-class _AndroidDrawableTemplate {
+class AndroidDrawableTemplate {
   final String directoryName;
   final double divider;
-  _AndroidDrawableTemplate(
-      {required this.directoryName, required this.divider});
+  AndroidDrawableTemplate({required this.directoryName, required this.divider});
 }
 
 @visibleForTesting
-final List<_AndroidDrawableTemplate> androidSplashImages =
-    <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(directoryName: 'drawable-mdpi', divider: 4.0),
-  _AndroidDrawableTemplate(directoryName: 'drawable-hdpi', divider: 2.67),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', divider: 2.0),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xxhdpi', divider: 1.33),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', divider: 1.0),
+final List<AndroidDrawableTemplate> androidSplashImages =
+    <AndroidDrawableTemplate>[
+  AndroidDrawableTemplate(directoryName: 'drawable-mdpi', divider: 4.0),
+  AndroidDrawableTemplate(directoryName: 'drawable-hdpi', divider: 2.67),
+  AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', divider: 2.0),
+  AndroidDrawableTemplate(directoryName: 'drawable-xxhdpi', divider: 1.33),
+  AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', divider: 1.0),
 ];
 
 @visibleForTesting
-final List<_AndroidDrawableTemplate> androidSplashImagesDark =
-    <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-mdpi', divider: 4.0),
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-hdpi', divider: 2.67),
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-xhdpi', divider: 2.0),
-  _AndroidDrawableTemplate(
+final List<AndroidDrawableTemplate> androidSplashImagesDark =
+    <AndroidDrawableTemplate>[
+  AndroidDrawableTemplate(directoryName: 'drawable-night-mdpi', divider: 4.0),
+  AndroidDrawableTemplate(directoryName: 'drawable-night-hdpi', divider: 2.67),
+  AndroidDrawableTemplate(directoryName: 'drawable-night-xhdpi', divider: 2.0),
+  AndroidDrawableTemplate(
       directoryName: 'drawable-night-xxhdpi', divider: 1.33),
-  _AndroidDrawableTemplate(
+  AndroidDrawableTemplate(
       directoryName: 'drawable-night-xxxhdpi', divider: 1.0),
 ];
 
@@ -60,8 +59,8 @@ void _createAndroidSplash({
     darkBackgroundImageSource: darkBackgroundImage,
     backgroundImageSource: backgroundImage,
     darkBackgroundImageDestination:
-        _androidNightDrawableFolder + 'background.png',
-    backgroundImageDestination: _androidDrawableFolder + 'background.png',
+        '${_androidNightDrawableFolder}background.png',
+    backgroundImageDestination: '${_androidDrawableFolder}background.png',
   );
 
   _createBackground(
@@ -70,8 +69,8 @@ void _createAndroidSplash({
     darkBackgroundImageSource: darkBackgroundImage,
     backgroundImageSource: backgroundImage,
     darkBackgroundImageDestination:
-        _androidNightV21DrawableFolder + 'background.png',
-    backgroundImageDestination: _androidV21DrawableFolder + 'background.png',
+        '${_androidNightV21DrawableFolder}background.png',
+    backgroundImageDestination: '${_androidV21DrawableFolder}background.png',
   );
 
   if (darkColor.isNotEmpty) {
@@ -109,7 +108,7 @@ void _createAndroidSplash({
 
 /// Create splash screen as drawables for multiple screens (dpi)
 void _applyImageAndroid({required String imagePath, bool dark = false}) {
-  log('[Android] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
+  log('[Android] Creating ${dark ? 'dark mode ' : ''}splash images');
 
   final image = img.decodeImage(File(imagePath).readAsBytesSync());
   if (image == null) {
@@ -126,7 +125,7 @@ void _applyImageAndroid({required String imagePath, bool dark = false}) {
 /// Note: Do not change interpolation unless you end up with better results
 /// https://github.com/fluttercommunity/flutter_launcher_icons/issues/101#issuecomment-495528733
 void _saveImageAndroid(
-    {required _AndroidDrawableTemplate template, required img.Image image}) {
+    {required AndroidDrawableTemplate template, required img.Image image}) {
   var newFile = img.copyResize(
     image,
     width: image.width ~/ template.divider,
@@ -134,8 +133,7 @@ void _saveImageAndroid(
     interpolation: img.Interpolation.linear,
   );
 
-  var file =
-      File(_androidResFolder + template.directoryName + '/' + 'splash.png');
+  var file = File('${_androidResFolder + template.directoryName}/splash.png');
   file.createSync(recursive: true);
   file.writeAsBytesSync(img.encodePng(newFile));
 }
@@ -147,12 +145,12 @@ void _applyLaunchBackgroundXml(
     required bool showImage}) {
   log('[Android] Updating $launchBackgroundFilePath with splash image path');
   final launchBackgroundFile = File(launchBackgroundFilePath);
-  var launchBackgroundDocument;
+  XmlDocument launchBackgroundDocument;
   launchBackgroundFile.createSync(recursive: true);
   launchBackgroundDocument = XmlDocument.parse(_androidLaunchBackgroundXml);
 
   final layerList = launchBackgroundDocument.getElement('layer-list');
-  final List<XmlNode> items = layerList.children;
+  final List<XmlNode> items = layerList!.children;
 
   if (showImage) {
     var splashItem =

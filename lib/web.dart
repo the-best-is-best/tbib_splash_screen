@@ -1,10 +1,10 @@
 part of tbib_splash_screen;
 
 // Image template
-class _WebLaunchImageTemplate {
+class WebLaunchImageTemplate {
   final String fileName;
   final double divider;
-  _WebLaunchImageTemplate({required this.fileName, required this.divider});
+  WebLaunchImageTemplate({required this.fileName, required this.divider});
 }
 
 /// Create Android splash screen
@@ -18,20 +18,20 @@ void _createWebSplash({
   required String darkBackgroundImage,
 }) {
   if (!File(_webIndex).existsSync()) {
-    log('[Web] ' + _webIndex + ' not found.  Skipping Web.');
+    log('[Web] $_webIndex not found.  Skipping Web.');
     return;
   }
 
   if (darkImagePath.isEmpty) darkImagePath = imagePath;
   createWebImages(imagePath: imagePath, webSplashImages: [
-    _WebLaunchImageTemplate(fileName: 'light-1x.png', divider: 3.0),
-    _WebLaunchImageTemplate(fileName: 'light-2x.png', divider: 1.5),
-    _WebLaunchImageTemplate(fileName: 'light-3x.png', divider: 1.0),
+    WebLaunchImageTemplate(fileName: 'light-1x.png', divider: 3.0),
+    WebLaunchImageTemplate(fileName: 'light-2x.png', divider: 1.5),
+    WebLaunchImageTemplate(fileName: 'light-3x.png', divider: 1.0),
   ]);
   createWebImages(imagePath: darkImagePath, webSplashImages: [
-    _WebLaunchImageTemplate(fileName: 'dark-1x.png', divider: 3.0),
-    _WebLaunchImageTemplate(fileName: 'dark-2x.png', divider: 1.5),
-    _WebLaunchImageTemplate(fileName: 'dark-3x.png', divider: 1.0),
+    WebLaunchImageTemplate(fileName: 'dark-1x.png', divider: 3.0),
+    WebLaunchImageTemplate(fileName: 'dark-2x.png', divider: 1.5),
+    WebLaunchImageTemplate(fileName: 'dark-3x.png', divider: 1.0),
   ]);
   createBackgroundImages(
       backgroundImage: backgroundImage,
@@ -45,31 +45,31 @@ void createBackgroundImages({
   required String darkBackgroundImage,
 }) {
   if (backgroundImage.isEmpty) {
-    final file = File(_webSplashImagesFolder + 'light-background.png');
+    final file = File('${_webSplashImagesFolder}light-background.png');
     if (file.existsSync()) file.deleteSync();
   } else {
     // Copy will not work if the directory does not exist, so createSync
     // will ensure that the directory exists.
     File(backgroundImage).createSync(recursive: true);
     File(backgroundImage)
-        .copySync(_webSplashImagesFolder + 'light-background.png');
+        .copySync('${_webSplashImagesFolder}light-background.png');
   }
 
   if (darkBackgroundImage.isEmpty) {
-    final file = File(_webSplashImagesFolder + 'dark-background.png');
+    final file = File('${_webSplashImagesFolder}dark-background.png');
     if (file.existsSync()) file.deleteSync();
   } else {
     // Copy will not work if the directory does not exist, so createSync
     // will ensure that the directory exists.
     File(darkBackgroundImage).createSync(recursive: true);
     File(darkBackgroundImage)
-        .copySync(_webSplashImagesFolder + 'dark-background.png');
+        .copySync('${_webSplashImagesFolder}dark-background.png');
   }
 }
 
 void createWebImages(
     {required String imagePath,
-    required List<_WebLaunchImageTemplate> webSplashImages}) {
+    required List<WebLaunchImageTemplate> webSplashImages}) {
   if (imagePath.isEmpty) {
     for (var template in webSplashImages) {
       final file = File(_webSplashImagesFolder + template.fileName);
@@ -78,7 +78,7 @@ void createWebImages(
   } else {
     final image = img.decodeImage(File(imagePath).readAsBytesSync());
     if (image == null) {
-      log(imagePath + ' could not be read');
+      log('$imagePath could not be read');
       exit(1);
     }
     log('[Web] Creating images');
@@ -89,7 +89,7 @@ void createWebImages(
 }
 
 void _saveImageWeb(
-    {required _WebLaunchImageTemplate template, required img.Image image}) {
+    {required WebLaunchImageTemplate template, required img.Image image}) {
   var newFile = img.copyResize(
     image,
     width: image.width ~/ template.divider,
@@ -106,8 +106,8 @@ void createSplashCss({required String color, required String darkColor}) {
   log('[Web] Creating CSS');
   if (darkColor.isEmpty) darkColor = color;
   var cssContent = _webCss
-      .replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#' + color)
-      .replaceFirst('[DARKBACKGROUNDCOLOR]', '#' + darkColor);
+      .replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#$color')
+      .replaceFirst('[DARKBACKGROUNDCOLOR]', '#$darkColor');
   var file = File(_webFolder + _webRelativeStyleFile);
   file.createSync(recursive: true);
   file.writeAsStringSync(cssContent);
@@ -123,7 +123,7 @@ void updateIndex({required String imageMode, required bool showImages}) {
   var dartScriptTagLine = 0;
   var existingPictureLine = 0;
 
-  final styleSheetLink =
+  const styleSheetLink =
       '<link rel="stylesheet" type="text/css" href="splash/style.css">';
   for (var x = 0; x < lines.length; x++) {
     var line = lines[x];
@@ -140,16 +140,14 @@ void updateIndex({required String imageMode, required bool showImages}) {
   }
 
   if (!foundExistingStyleSheet) {
-    lines[headCloseTagLine] = '  ' + styleSheetLink + '\n</head>';
+    lines[headCloseTagLine] = '  $styleSheetLink\n</head>';
   }
 
   if (existingPictureLine == 0) {
     if (showImages) {
       for (var x = _indexHtmlPicture.length - 1; x >= 0; x--) {
         lines[dartScriptTagLine] =
-            _indexHtmlPicture[x].replaceFirst('[IMAGEMODE]', imageMode) +
-                '\n' +
-                lines[dartScriptTagLine];
+            '${_indexHtmlPicture[x].replaceFirst('[IMAGEMODE]', imageMode)}\n${lines[dartScriptTagLine]}';
       }
     }
   } else {

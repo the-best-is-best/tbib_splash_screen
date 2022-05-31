@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:developer';
 
 import 'package:animated_text_kit/animated_text_kit.dart';

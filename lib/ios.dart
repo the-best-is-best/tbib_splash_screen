@@ -1,25 +1,25 @@
 part of tbib_splash_screen;
 
 // Image template
-class _IosLaunchImageTemplate {
+class IosLaunchImageTemplate {
   final String fileName;
   final double divider;
 
-  _IosLaunchImageTemplate({required this.fileName, required this.divider});
+  IosLaunchImageTemplate({required this.fileName, required this.divider});
 }
 
-final List<_IosLaunchImageTemplate> iOSSplashImages = <_IosLaunchImageTemplate>[
-  _IosLaunchImageTemplate(fileName: 'LaunchImage.png', divider: 3),
-  _IosLaunchImageTemplate(fileName: 'LaunchImage@2x.png', divider: 1.5),
-  _IosLaunchImageTemplate(
+final List<IosLaunchImageTemplate> iOSSplashImages = <IosLaunchImageTemplate>[
+  IosLaunchImageTemplate(fileName: 'LaunchImage.png', divider: 3),
+  IosLaunchImageTemplate(fileName: 'LaunchImage@2x.png', divider: 1.5),
+  IosLaunchImageTemplate(
       fileName: 'LaunchImage@3x.png', divider: 1), // original image must be @3x
 ];
 
-final List<_IosLaunchImageTemplate> iOSSplashImagesDark =
-    <_IosLaunchImageTemplate>[
-  _IosLaunchImageTemplate(fileName: 'LaunchImageDark.png', divider: 3),
-  _IosLaunchImageTemplate(fileName: 'LaunchImageDark@2x.png', divider: 1.5),
-  _IosLaunchImageTemplate(fileName: 'LaunchImageDark@3x.png', divider: 1),
+final List<IosLaunchImageTemplate> iOSSplashImagesDark =
+    <IosLaunchImageTemplate>[
+  IosLaunchImageTemplate(fileName: 'LaunchImageDark.png', divider: 3),
+  IosLaunchImageTemplate(fileName: 'LaunchImageDark@2x.png', divider: 1.5),
+  IosLaunchImageTemplate(fileName: 'LaunchImageDark@3x.png', divider: 1),
   // original image must be @3x
 ];
 
@@ -39,23 +39,23 @@ void _createiOSSplash({
     _applyImageiOS(imagePath: imagePath);
   } else {
     final splashImage = img.Image(1, 1);
-    iOSSplashImages.forEach((template) {
+    for (var template in iOSSplashImages) {
       var file = File(_iOSAssetsLaunchImageFolder + template.fileName);
       file.createSync(recursive: true);
       file.writeAsBytesSync(img.encodePng(splashImage));
-    });
+    }
   }
 
   if (darkImagePath.isNotEmpty) {
     _applyImageiOS(imagePath: darkImagePath, dark: true);
   } else {
-    iOSSplashImagesDark.forEach((template) {
+    for (var template in iOSSplashImagesDark) {
       final file = File(_iOSAssetsLaunchImageFolder + template.fileName);
       if (file.existsSync()) file.deleteSync();
-    });
+    }
   }
 
-  var launchImageFile = File(_iOSAssetsLaunchImageFolder + 'Contents.json');
+  var launchImageFile = File('${_iOSAssetsLaunchImageFolder}Contents.json');
   launchImageFile.createSync(recursive: true);
   launchImageFile.writeAsStringSync(
       darkImagePath.isNotEmpty ? _iOSContentsJsonDark : _iOSContentsJson);
@@ -68,13 +68,13 @@ void _createiOSSplash({
     darkBackgroundImageSource: darkBackgroundImage,
     backgroundImageSource: backgroundImage,
     darkBackgroundImageDestination:
-        _iOSAssetsLaunchImageBackgroundFolder + 'darkbackground.png',
+        '${_iOSAssetsLaunchImageBackgroundFolder}darkbackground.png',
     backgroundImageDestination:
-        _iOSAssetsLaunchImageBackgroundFolder + 'background.png',
+        '${_iOSAssetsLaunchImageBackgroundFolder}background.png',
   );
 
   var backgroundImageFile =
-      File(_iOSAssetsLaunchImageBackgroundFolder + 'Contents.json');
+      File('${_iOSAssetsLaunchImageBackgroundFolder}Contents.json');
   backgroundImageFile.createSync(recursive: true);
 
   backgroundImageFile.writeAsStringSync(darkColor.isNotEmpty
@@ -86,11 +86,11 @@ void _createiOSSplash({
 
 /// Create splash screen images for original size, @2x and @3x
 void _applyImageiOS({required String imagePath, bool dark = false}) {
-  log('[iOS] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
+  log('[iOS] Creating ${dark ? 'dark mode ' : ''}splash images');
 
   final image = img.decodeImage(File(imagePath).readAsBytesSync());
   if (image == null) {
-    log(imagePath + ' could not be loaded.');
+    log('$imagePath could not be loaded.');
     exit(1);
   }
   for (var template in dark ? iOSSplashImagesDark : iOSSplashImages) {
@@ -100,7 +100,7 @@ void _applyImageiOS({required String imagePath, bool dark = false}) {
 
 /// Saves splash screen image to the project
 void _saveImageiOS(
-    {required _IosLaunchImageTemplate template, required img.Image image}) {
+    {required IosLaunchImageTemplate template, required img.Image image}) {
   var newFile = img.copyResize(
     image,
     width: image.width ~/ template.divider,
@@ -209,7 +209,7 @@ void _updateLaunchScreenStoryboard(
   if (imagePath.isNotEmpty) {
     final image = img.decodeImage(File(imagePath).readAsBytesSync());
     if (image == null) {
-      log(imagePath + ' could not be loaded.');
+      log('$imagePath could not be loaded.');
       exit(1);
     }
     launchImageResource?.setAttribute('width', image.width.toString());
@@ -284,7 +284,7 @@ void _applyInfoPList({List<String>? plistFiles, required bool fullscreen}) {
     plistFiles.add(_iOSInfoPlistFile);
   }
 
-  plistFiles.forEach((plistFile) {
+  for (var plistFile in plistFiles) {
     if (!File(plistFile).existsSync()) {
       log('File $plistFile not found.  If you renamed the file, make sure to'
           ' specify it in the info_plist_files section of your '
@@ -294,7 +294,7 @@ void _applyInfoPList({List<String>? plistFiles, required bool fullscreen}) {
 
     log('[iOS] Updating $plistFile for status bar hidden/visible');
     _updateInfoPlistFile(plistFile: plistFile, fullscreen: fullscreen);
-  });
+  }
 }
 
 /// Update Infop.list with status bar hidden directive
@@ -305,7 +305,7 @@ void _updateInfoPlistFile(
   final xmlDocument = XmlDocument.parse(file.readAsStringSync());
   final dict = xmlDocument.getElement('plist')?.getElement('dict');
   if (dict == null) {
-    throw Exception(plistFile + ' plist dict element not found');
+    throw Exception('$plistFile plist dict element not found');
   }
 
   var elementFound = true;
