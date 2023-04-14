@@ -1,20 +1,26 @@
+## 1.0.0
+
+- support flutter 3
+- removed create native splash screen
+
 ## 0.0.6
 
-* Please use flutter_native_splash to create Native.
+- Please use flutter_native_splash to create Native.
+
 ## 0.0.5
 
-* Upgrade Library.
-* Solve Readme.
-* Support background gradient color.
+- Upgrade Library.
+- Solve Readme.
+- Support background gradient color.
 
 ## 0.0.3
 
-* Solve Readme.
+- Solve Readme.
 
 ## 0.0.2
 
-* Support: Lottie Fie Json And Solve Bug.
+- Support: Lottie Fie Json And Solve Bug.
 
 ## 0.0.1
 
-* TODO: Describe initial release.
+- TODO: Describe initial release.
